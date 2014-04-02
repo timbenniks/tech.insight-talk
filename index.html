@@ -1,0 +1,415 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Building Rich Interactive Experiences In The Browser</title>
+	<meta name="description" content="Building Rich Interactive Experiences In The Browser">
+	<meta name="author" content="Hakim El Hattab">
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+	<link rel="stylesheet" href="css/reveal.min.css">
+	<link rel="stylesheet" href="css/theme/default.css" id="theme">
+	<link rel="stylesheet" href="css/tim.css" />
+	<link rel="stylesheet" href="lib/css/zenburn.css">
+
+	<script>
+		if( window.location.search.match( /print-pdf/gi ) )
+		{
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = 'css/print/pdf.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		}
+	</script>
+</head>
+
+<body>
+	<div class="reveal">
+		<div class="slides">
+
+			<section data-background="./assets/Tim.Slides.001.jpg"></section>
+			<section data-background="./assets/Tim.Slides.002.jpg"></section>
+			<section data-background="./assets/Tim.Slides.003.jpg"></section>
+			<section data-background="./assets/Tim.Slides.005.jpg"></section>
+			<section data-background="./assets/Tim.Slides.006.jpg"></section>
+
+			<section data-background="./assets/first.jpeg"></section>
+
+			<section data-background="./assets/tim.jpg" style="text-align:right">
+				<h1>Tim Benniks</h1>
+				<p>Senior web developer at AKQA</p>
+				<p>github.com/timbenniks</p>
+				<p>@timbenniks</p>
+			</section>
+
+			<section data-background="#406877">
+				<h1>Agenda</h1>
+				<p>The Project</p>
+				<p>Technical challenges</p>
+				<p>Pragmatic solutions</p>
+				<p>Questions</p>
+			</section>
+
+			<section data-background="#b7b7b7" class="light">
+				<a href="http://willyoucrosstheline.cloudapp.net/" target="_blank"><img src="./assets/logo.png" width="600" class="image" style="border:none;background:none;box-shadow:none;margin-bottom: 100px;" /></a>
+				<p>Interactive TV commercial</p>
+				<p>Choose to cross the line</p>
+				<p>Emphasis on intense moments</p>
+
+				<aside class="notes">
+					<p>Badass cop, above the law</p>
+					<p>Do you choose to be the same?</p>
+					<p>Show the site</p>
+				</aside>
+			</section>
+
+			<section data-background="#577e8d">
+				<h1>Technical challenges</h1>
+			</section>
+
+			<section data-background="#406877">
+				<h1>Performance</h1>
+			</section>
+
+			<section data-background="#577e8d">
+				<h1>Animations</h1>
+				<p>Animating with clips</p>
+				<p>Animating masks on moving parts</p>
+			</section>
+
+			<section data-background="#406877">
+				<h1>Video</h1>
+				<p>Streaming or pre-loading?</p>
+				<p>Time-based events</p>
+			</section>
+
+			<section data-background="#577e8d">
+				<h1>Interactive 3D scene</h1>
+			</section>
+
+			<section data-background="#406877">
+				<h1>Sound</h1>
+				<p>Async / event based</p>
+			</section>
+
+			<section data-background="#406877">
+				<h1>Five weeks<br /> One web-developer</h1>
+			</section>
+
+			<section data-background="./assets/lets_do_this2.jpg">
+				<h1>Let's do this!</h1>
+			</section>
+
+			<section data-background="./assets/bruce.jpg"></section>
+
+			<section data-background="#000">
+				<img src="./assets/preloader.jpg" width="527" class="image" style="border:none;background:none;box-shadow:none;margin-bottom: 50px;" />
+				<h1>Performance</h1>
+			</section>
+
+			<section>
+				<h1>Pre-load assets in groups</h1>
+				<p>Only load what you need</p>
+				<p>Load during idle time</p>
+				<p>Garbage collect</p>
+			</section>
+
+			<section>
+				<h1>The obvious stuff</h1>
+				<p>Use a CDN with versioned content</p>
+				<p>Concat and minify JavaScript and CSS in the build</p>
+				<p>Use GZIP compression</p>
+			</section>
+
+			<section data-background="./assets/bg.jpg">
+				<img src="./assets/choices.png" width="1200" class="image" style="border:none;background:none;box-shadow:none;margin-bottom: 50px;" />
+				<h1>Animations</h1>
+			</section>
+
+			<section>
+				<h1>Animations with video</h1>
+				<p>Videos have a time-based api. We needed a frame-based api.</p>
+				<p>We needed looping and tweening over frames in time</p>
+			</section>
+
+			<section>
+				<h1>Reinventing the wheel of video playing</h1>
+				<p>Simple tweening, seperate frame images, canvas</p>
+			</section>
+
+			<section>
+				<h1>Canvas renders frames for time</h1>
+				<pre class="javascript"><code data-trim>
+var toFframe = 100,
+    callback = function() { alert('What would Chuck Norris do?'); };
+
+tweenToFrame(toFframe, callback);
+				</code></pre>
+			</section>
+
+			<section>
+
+				<pre class="javascript"><code data-trim>
+// {Number} toFrame
+// {Function} callback
+tweenToFrame = function(toFrame, callback)
+{
+  // object with property to tween
+  var sequenceData = { frame: currentFrame },
+      time = 500; // time in ms
+
+  tween.to(sequenceData, time,
+  {
+    value: toFrame,
+    onUpdate: function()
+    {
+      showFrame(~~sequenceData.frame);
+    },
+
+    onComplete: function()
+    {
+      if(callback) callback();
+    }
+  });
+}
+				</code></pre>
+			</section>
+
+			<section>
+				<pre class="javascript"><code data-trim>
+// List of frames (created by the pre-loader)
+var frames =
+[
+  { url: 'image.jpg', tag: 'HTMLIMAGEElement' },
+  { url: 'image2.jpg', tag: 'HTMLIMAGEElement' }
+],
+
+showFrame = function (frameNo)
+{
+  context.drawImage(
+    frames[frameNo].tag,
+    0, 0, 1100, 618, 0, 0, 1100, 618
+  );
+}
+				</code></pre>
+
+				<p><a href="http://willyoucrosstheline.cloudapp.net/?deeplink=startSceneOneChoice" target="_blank">See it in action</a></p>
+			</section>
+
+
+			<section>
+				<h1>Animating masks on moving parts</h1>
+			</section>
+			<Section>
+
+				<h2>Canvas path masks image</h2>
+				<img src="./assets/mask.jpg" width="1100" class="image" style="border:none;background:none;box-shadow:none;margin-bottom: 50px;" />
+			</section>
+			<section>
+				<pre class="javascript"><code data-trim>
+var pathPoints =
+{
+  topLeftX: 86,
+  topLeftY: 0,
+
+  topRightX: 593,
+  topRightY: 0,
+
+  bottomRightX: 507,
+  bottomRightY: 618,
+
+  bottomLeftX: 0,
+  bottomLeftY: 618
+};
+				</code></pre>
+
+			</section>
+
+			<section>
+				<h2>Tween the path points</h2>
+				<pre class="javascript"><code data-trim>
+// Automatically updates pathPoints object with tween
+Tween.to(pathPoints, time,
+{
+  topRightX: 454,
+  bottomRightX: 368,
+  ease: 'Expo.EaseInOut',
+  onUpdate: function()
+  {
+    // currentFrame is a global var set by the
+    // mouseover function which plays the sequence
+    showFrame(currentFrame);
+  }
+});
+				</code></pre>
+			</section>
+
+
+			<section>
+				<h2>This will tween the path and show frames</h2>
+				<pre class="javascript"><code data-trim>
+showFrame = function (frame)
+{
+  context.save();
+  context.clearRect(0, 0, 1100, 618);
+
+  context.beginPath();
+  context.moveTo(pathPoints.topLeftX, pathPoints.topLeftY);
+  context.lineTo(pathPoints.topRightX, pathPoints.topRightY);
+  context.lineTo(pathPoints.bottomRightX, pathPoints.bottomRightY);
+  context.lineTo(pathPoints.bottomLeftX, pathPoints.bottomLeftY);
+  context.lineTo(pathPoints.topLeftX, pathPoints.topLeftY);
+  context.closePath();
+
+  context.clip();
+
+  context.drawImage(frames[frame].tag, 0, 0, 1100, 618, 0, 0, 1100, 618);
+  context.restore();
+}
+				</code></pre>
+				<p><a href="http://willyoucrosstheline.cloudapp.net/?deeplink=startSceneOneChoice" target="_blank">See it in action</a></p>
+
+			</section>
+
+			<section data-background="./assets/video-title3.jpg">
+				<h1>Video</h1>
+			</section>
+
+			<section data-background="#111">
+				<h2>Some emotions</h2>
+			</section>
+
+			<section data-background="./assets/video.jpg"></section>
+			<section data-background="./assets/video1.jpg"></section>
+			<section data-background="./assets/video2.jpg"></section>
+			<section data-background="./assets/video3.jpg"></section>
+
+			<section>
+				<h1>Huh?</h1>
+				<p class="fragment">Pre-loading a video only sometimes works</p>
+				<p class="fragment">No matter how you encode it</p>
+				<p class="fragment">It also depends on how it's served from the CDN</p>
+				<p class="fragment">I think...</p>
+				<p class="fragment">Obviously it worked fine on my machine</p>
+			</section>
+
+			<section>
+				<h1>As it turns out</h1>
+			</section>
+
+			<section>
+				<h1>Streaming is awesome</h1>
+				<p>Server sends chunks of film with 206 partial content header</p>
+				<p>It's more stable than pre-loading</p>
+				<p>Just whack the video tag into the DOM and be happy</p>
+			</section>
+
+			<section>
+				<h1>Time based events</h1>
+				<p>We needed subtitles, timed accolades, sound triggers, analytics triggers</p>
+			</section>
+
+			<section>
+				<h2>Cue points on video timeupdate event</h2>
+
+				<pre class="javascript"><code data-trim>
+cuePoint(videotag, 2.1, function() { triggerEvent('sound::play', 'engine1'); });
+cuePoint(videotag, 2.4, function() { triggerEvent('sound::stop', 'engine1'); });
+				</code></pre>
+
+			</section>
+
+			<section data-background="./assets/3dscene.jpg">
+				<h1>Interactive 3D scene</h1>
+			</section>
+
+			<section>
+				<h1>Yay, let's do WebGL!</h1>
+			</section>
+
+			<section data-background="./assets/notime.gif"></section>
+
+			<section>
+				<h2>Couldn't get assets for 3 scenes in 5 weeks</h2>
+			</section>
+
+			<section>
+				<h2>Pragmatic solution</h2>
+				<p>Output screenshots from the game</p>
+				<p>360 cameras around an intense moment</p>
+				<p>Render in CANVAS</p>
+			</section>
+
+			<section>
+				<h2>Same approach as the choice page</h2>
+				<p>Tween through frames by clicking on a hotspot</p>
+				<p>Information overlay is another mask animation with canvas</p>
+				<p><a href="http://willyoucrosstheline.cloudapp.net/?deeplink=startSceneOneThreeSixty" target="_blank">See it in action</a></p>
+			</section>
+
+			<section data-background="./assets/sound.jpg">
+				<h1>Sound</h1>
+			</section>
+
+			<section>
+				<h1>All sound is loaded async</h1>
+				<p>Also for movies</p>
+				<p><a href="http://willyoucrosstheline.cloudapp.net/" target="_blank">Hear it in action</a></p>
+			</section>
+
+			<section>
+				<h1>Dinahmoe</h1>
+				<p>Partner for sound design and JS library</p>
+				<p>Their JS library played the sounds via our events system</p>
+				<p>These guys rock</p>
+			</section>
+
+			<section>
+				<h1>Big thanks to the team</h1>
+				<p class="fragment">This is only half of them though</p>
+			</section>
+
+			<section data-background="./assets/team.jpg"></section>
+
+			<section>
+				<h1>Like what you saw?</h1>
+				<p>I'm off to Paris next week</p>
+				<p>If you want my job, come chat to us...</p>
+			</section>
+
+			<section>
+				<h1>Questions?</h1>
+			</section>
+		</div>
+
+	</div>
+
+<script src="lib/js/head.min.js"></script>
+<script src="js/reveal.min.js"></script>
+
+<script>
+	Reveal.initialize({
+		controls: false,
+		progress: false,
+		history: true,
+		center: true,
+		width: 1800,
+		height: 1000,
+		theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+		transition: Reveal.getQueryHash().transition || 'concave', // default/cube/page/concave/zoom/linear/fade/none
+		backgroundTransition: 'slide',
+		dependencies: [
+			{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+			{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+			{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+			{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+			{ src: 'plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+			{ src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+		]
+	});
+</script>
+
+</body>
+</html>

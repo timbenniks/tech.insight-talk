@@ -1,0 +1,67 @@
+@font-face {
+	font-family: "Gotham";
+	src: url('../lib/font/gotham-book.eot');
+	src: url('../lib/font/gotham-book.eot?#iefix') format('eot'),
+		 url('../lib/font/gotham-book.svg') format('svg'),
+		 url('../lib/font/gotham-book.woff') format('woff'),
+		 url('../lib/font/gotham-book.ttf') format('truetype')
+}
+
+@font-face {
+	font-family: "Dharma";
+	src: url('../lib/font/DharmaGothicM_ExBold_I-webfont.eot');
+	src: url('../lib/font/DharmaGothicM_ExBold_I-webfont.eot?#iefix') format('eot'),
+		 url('../lib/font/DharmaGothicM_ExBold_I-webfont.svg') format('svg'),
+		 url('../lib/font/DharmaGothicM_ExBold_I-webfont.woff') format('woff'),
+		 url('../lib/font/DharmaGothicM_ExBold_I-webfont.ttf') format('truetype')
+}
+
+.reveal {
+	font-family: "Dharma", sans-serif;
+	font-size: 60px;
+	font-weight: normal;
+	color: #eeeeee;
+	letter-spacing: 0.03em;
+}
+
+.reveal h1,
+.reveal h2,
+.reveal h3,
+.reveal h4,
+.reveal h5,
+.reveal h6 {
+	margin: 0 0 20px 0;
+  	color: #eeeeee;
+	font-family: "Dharma", sans-serif;
+	line-height: 1;
+  	text-transform: uppercase;
+  	text-shadow: 0 0 12px rgba(0, 0, 0, 0.5);
+ 	letter-spacing: 0.03em;
+}
+
+.reveal p {
+	letter-spacing: 0.03em;
+	font-size: 1.5em;
+}
+
+.reveal h1 {
+  	text-shadow: 0 0 12px rgba(0, 0, 0, 0.5);
+	font-size: 3em;
+}
+
+.light {
+	color: #333;
+}
+
+.reveal pre {
+	font-size: .6em;
+	font-family: consolas, monospace;
+	line-height: 1.2em;
+	width: 100%;
+}
+
+.reveal pre code {
+	max-height: 1000px;
+	font-family: consolas, monospace;
+	width: 100%;
+}
